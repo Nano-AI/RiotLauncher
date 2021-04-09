@@ -7,7 +7,8 @@ function createWindow () {
     width: 1440,
     height: 810,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      // webSecurity: false
     }
   });
 
@@ -25,6 +26,7 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
+    app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
   });
 });
 
