@@ -1,0 +1,13 @@
+$body-background: rgb(17, 16, 15);
+$scrollbar-color: rgb(41, 41, 41);
+
+:root body {
+    background-color: $body-background;
+    overflow: hidden;
+}
+
+
+.simplebar-scrollbar::before {
+    background-color: $scrollbar-color !important;
+}
+

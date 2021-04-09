@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import SideBar from "./components/sidebar/SideBar";
 import { HashRouter, Route } from 'react-router-dom';
 import Home from "./components/home/Home";

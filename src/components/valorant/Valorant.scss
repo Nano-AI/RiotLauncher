@@ -1,0 +1,61 @@
+$card-background: rgb(32, 30, 28);
+
+.valorant-card {
+  background-color: $card-background !important;
+  border-radius: 0;
+  z-index: 1;
+}
+
+.border-0 {
+  border-radius: 0;
+}
+
+.button-surround {
+  border: 1px solid white;
+}
+
+button {
+  display: inline-block;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  color: whitesmoke;
+  transition: color .2s;
+}
+
+button:after {
+  content: '';
+  position: absolute;
+  background-color: rgb(255, 71, 99);
+  z-index: -1;
+}
+
+button:hover {
+  color: white;
+}
+
+/* Directions */
+button.left:after {
+  left: -.3em;
+  top: 0;
+  height: 100%;
+  width: .08em;
+  transform: skew(-20deg);
+  transition: width .2s;
+}
+button.left:hover:after {
+  width: calc(100% + .6em);
+}
+
+button.right:after {
+  right: -.3em;
+  top: 0;
+  height: 100%;
+  width: .08em;
+  transform: skew(-20deg);
+  transition: width .2s;
+}
+button.right:hover:after {
+  width: calc(100% + .6em);
+}
