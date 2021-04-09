@@ -1,4 +1,4 @@
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import {createStyles, Theme, makeStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import riot_logo from "../../assets/white-riot-logo.svg";
@@ -33,9 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: theme.palette.background.default,
             padding: theme.spacing(3),
         },
-        riotLogo: {
-
-        }
+        riotLogo: {}
     }),
 );
 
@@ -43,7 +41,7 @@ export default function SideBar() {
     const classes = useStyles();
     return (
         <div className={`${classes.root} unselectable`}>
-            <CssBaseline />
+            <CssBaseline/>
             <Drawer
                 className={classes.drawer}
                 variant="permanent"
@@ -52,12 +50,13 @@ export default function SideBar() {
                 }}
                 anchor="left"
             >
-                <img src={riot_logo} className={'mb-5 ml-5 mt-5 mr-5 no-antialising'}  alt={"The Riot Games logo"}/>
+                <img src={riot_logo} className={'mb-5 ml-5 mt-5 mr-5 no-antialising'} alt={"The Riot Games logo"}/>
                 <div className={'mt-4 ml-5 text-white'}>
                     <HashRouter>
                         <h6 className={"mb-5"}><NavLink exact className={"no-url"} to={"/"}>Home</NavLink></h6>
                         <h6 className={"mb-5"}><NavLink className={"no-url"} to={"/valorant"}>VALORANT</NavLink></h6>
-                        <h6 className={"mb-5"}><NavLink className={"no-url"} to={"/lol"}>League of Legends</NavLink></h6>
+                        <h6 className={"mb-5"}><NavLink className={"no-url"} to={"/lol"}>League of Legends</NavLink>
+                        </h6>
                         {/*<h6 className={"mb-5"}>Teamfight Tactics</h6>*/}
                         {/*<h6 className={"mb-5"}>Legends of Runeterra</h6>*/}
                     </HashRouter>

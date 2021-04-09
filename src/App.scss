@@ -1,26 +1,25 @@
 $body-background: rgb(17, 16, 15);
-$scrollbar-color: rgb(41, 41, 41);
+$scrollbar-color: rgb(60, 60, 60);
 
 :root body {
-    background-color: $body-background;
-    overflow: hidden;
+  background-color: $body-background;
+  overflow: hidden;
 }
 
-
 .simplebar-scrollbar::before {
-    background-color: $scrollbar-color !important;
+  background-color: $scrollbar-color !important;
 }
 
 *.unselectable {
-    -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
 
-    /*
-      Introduced in IE 10.
-      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
-    */
-    -ms-user-select: none;
-    user-select: none;
+  /*
+    Introduced in IE 10.
+    See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+  */
+  -ms-user-select: none;
+  user-select: none;
 }
 
