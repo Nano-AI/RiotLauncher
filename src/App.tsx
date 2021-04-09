@@ -1,26 +1,46 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import SideBar from "./components/sidebar/SideBar";
+import { HashRouter, Route } from 'react-router-dom';
+import Home from "./components/home/Home";
+import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import Valorant from "./components/valorant/Valorant";
+import LeagueOfLegends from "./components/lol/LeagueOfLegends";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        content: {
+            marginLeft: drawerWidth,
+            flexGrow: 1,
+            padding: theme.spacing(3),
+            color: 'white'
+        },
+    }),
+);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const classes = useStyles();
+    return (
+        <div className="App">
+            <header className="App-header">
+                <SideBar />
+            </header>
+            <main className={`${classes.content} p-0`}>
+                <HashRouter>
+                    <Route exact path={'/'} component={Home} />
+                    <Route path={'/valorant'} component={Valorant} />
+                    <Route path={'/lol'} component={LeagueOfLegends} />
+                </HashRouter>
+                {/*<Route path={'/'} component={TeamfightTactics} />*/}
+                {/*<Route path={'/'} component={LegendsOfRuneterra} />*/}
+            {/*</div>*/}
+            </main>
+        </div>
+    );
 }
 
 export default App;

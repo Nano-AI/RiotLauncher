@@ -1,0 +1,26 @@
+$active-url: white;
+$url-color: rgb(124, 124, 124);
+$url-hover: rgb(200, 200, 200);
+
+.no-antialising {
+  image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+  image-rendering: -moz-crisp-edges;          /* Firefox                        */
+  image-rendering: -o-crisp-edges;            /* Opera                          */
+  image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+  image-rendering: pixelated;                 /* Chrome                         */
+  image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+  -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+}
+
+.no-url {
+  color: $url-color;
+}
+
+.no-url:hover {
+  text-decoration: none;
+  color: $url-hover !important;
+}
+
+.active {
+  color: $active-url;
+}
