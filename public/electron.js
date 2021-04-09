@@ -1,12 +1,17 @@
-const { app, BrowserWindow, session } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const child = require('child_process').execFile;
+
+const valorantPath = "C:\\Riot Games\\Riot Client\\RiotClientServices.exe";
+const valorantParamaters = ["--launch-product=valorant", "--launch-patchline=live"];
+const valorantRunFile = "\"C:\\Riot Games\\Riot Client\\RiotClientServices.exe\" --launch-product=valorant --launch-patchline=live";
 
 function createWindow () {
   const win = new BrowserWindow({
     width: 1440,
     height: 810,
-    resizable: false,
+    // resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       webSecurity: false,
@@ -40,14 +45,14 @@ app.on('window-all-closed', () => {
 })
 
 app.on('ready', () => {
- /* const filter = {
-    urls: ['*://!*.google.com/!*', '*://!*.playvalorant.com/!*']
-  };
+});
 
-  session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
-    details.requestHeaders['Origin'] = null;
-    // details.headers['Origin'] = null;
-    callback({ requestHeaders: details.requestHeaders })
-  });*/
+ipcMain.on('launch-valorant', () => {
+  child(valorantPath, valorantParamaters, (err, data) => {
+    if (err)
+      console.error(err)
+    else
+      console.log(data)
+  });
 });
 

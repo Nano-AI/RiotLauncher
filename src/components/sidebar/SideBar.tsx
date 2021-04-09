@@ -1,15 +1,6 @@
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-// import riot_logo from "../../assets/white-riot-logo.png";
 import riot_logo from "../../assets/white-riot-logo.svg";
 import {HashRouter, NavLink} from "react-router-dom";
 
@@ -51,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function SideBar() {
     const classes = useStyles();
     return (
-        <div className={classes.root}>
+        <div className={`${classes.root} unselectable`}>
             <CssBaseline />
             <Drawer
                 className={classes.drawer}
