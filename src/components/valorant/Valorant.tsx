@@ -5,7 +5,6 @@ import {Card, Container, Jumbotron, Row} from "react-bootstrap";
 import './Valorant.scss';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
-import league_background from "../../assets/league-background.jpg";
 
 const {shell, ipcRenderer} = window.require('electron');
 const request = require('request');
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         jumboBackground: {
             height: jumbotron_height,
-            backgroundImage: `url(${league_background})`,
+            backgroundImage: `url(${valorant_background})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center'
