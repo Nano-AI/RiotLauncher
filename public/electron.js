@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const {app, BrowserWindow, ipcMain} = require("electron");
 const path = require("path");
 const child = require("child_process").execFile;
 const isDev = require("electron-is-dev");
@@ -31,9 +31,9 @@ function createWindow() {
   win.setMenuBarVisibility(false);
 
   win.loadURL(
-    isDev
-      ? "http://localhost:3000"
-      : `file://${path.join(__dirname, "../build/index.html")}`
+      isDev
+          ? "http://localhost:3000"
+          : `file://${path.join(__dirname, "../build/index.html")}`
   );
 }
 
@@ -52,7 +52,8 @@ app.on("window-all-closed", () => {
   }
 });
 
-app.on("ready", () => {});
+app.on("ready", () => {
+});
 
 ipcMain.on("launch-valorant", () => {
   child(riotClientServicesPath, valorantParamaters, (err, data) => {
