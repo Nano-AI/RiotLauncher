@@ -1,25 +1,36 @@
-import React, {useState} from "react";
+import React, {useLayoutEffect, useState} from "react";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import valorant_background from "../../assets/valorant-background.jpg";
 import {Card, Container, Jumbotron, Row} from "react-bootstrap";
 import './Valorant.scss';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
+import league_background from "../../assets/league-background.jpg";
 
-const {remote, shell, ipcRenderer} = window.require('electron');
+const {shell, ipcRenderer} = window.require('electron');
 const request = require('request');
 
 const jumbotron_height = 350;
-const size = remote.getCurrentWindow().getSize();
-const max_height = size[1] - jumbotron_height;
-
 const newsLang = "en-us";
+
+function useWindowSize() {
+    const [size, setSize] = useState([0, 0]);
+    useLayoutEffect(() => {
+        function updateSize() {
+            setSize([window.innerWidth, window.innerHeight]);
+        }
+        window.addEventListener('resize', updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         jumboBackground: {
             height: jumbotron_height,
-            backgroundImage: `url(${valorant_background})`,
+            backgroundImage: `url(${league_background})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center'
@@ -29,6 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Valorant() {
     const classes = useStyles();
     const [vNews, setVNews] = useState([]);
+    const [width, height] = useWindowSize();
 
     React.useEffect(() => {
         fetchData();
@@ -82,7 +94,7 @@ export default function Valorant() {
                     </div>
                 </Container>
             </Jumbotron>
-            <SimpleBar style={{maxHeight: max_height}} autoHide={false} scrollbarMinSize={40}>
+            <SimpleBar style={{maxHeight: height - jumbotron_height}} autoHide={false} scrollbarMinSize={40}>
                 <Container className={"mb-5"}>
                     <Row>
                         {vNews.map((element) => {
@@ -90,7 +102,7 @@ export default function Valorant() {
                             return (
                                 <div className={"col-6"}>
                                     <Card className={'text-white mb-4 mr-4 mr-4 col-12 p-0 border-0 valorant-card'}>
-                                        <Card.Img variant={"top"} className={"w-100 border-0"}
+                                        <Card.Img variant={"top"} className={"w-100 border-0 unselectable"}
                                                   src={element['banner']['url']}/>
                                         <Card.Body>
                                             <Card.Title className={"valorant-font"}>

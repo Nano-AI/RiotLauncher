@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useLayoutEffect, useState} from "react";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import league_background from "../../assets/league-background.jpg";
 import lolLogo from '../../assets/league-logo.png';
@@ -6,14 +6,24 @@ import {Card, Container, Jumbotron, Row} from "react-bootstrap";
 import './LeagueOfLegends.scss';
 import SimpleBar from "simplebar-react";
 
-const {remote, shell, ipcRenderer} = window.require('electron');
+const {shell, ipcRenderer} = window.require('electron');
 const request = require('request');
 
 const jumbotron_height = 350;
-const size = remote.getCurrentWindow().getSize();
-const max_height = size[1] - jumbotron_height;
-
 const newsLang = "en-us";
+
+function useWindowSize() {
+    const [size, setSize] = useState([0, 0]);
+    useLayoutEffect(() => {
+        function updateSize() {
+            setSize([window.innerWidth, window.innerHeight]);
+        }
+        window.addEventListener('resize', updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,6 +41,7 @@ export default function LeagueOfLegends() {
     const [lPatch, setLPatch] = useState(null);
     const [lUpdate, setLUpdate] = useState(null);
     const [lMedia, setLMedia] = useState(null);
+    const [width, height] = useWindowSize();
     // const [lNews, setLNews] = useState([]);
 
     React.useEffect(() => {
@@ -59,7 +70,6 @@ export default function LeagueOfLegends() {
                     }
                     const latestPatch = body["result"]["pageContext"]["data"]["sections"][0]["props"]["articles"][0];
                     setLPatch(latestPatch);
-                    console.log(latestPatch);
                 });
         }
         if (!lMedia) {
@@ -72,7 +82,6 @@ export default function LeagueOfLegends() {
                     }
                     const latestMedia = body["result"]["pageContext"]["data"]["sections"][0]["props"]["articles"][0];
                     setLMedia(latestMedia);
-                    console.log(latestMedia);
                 });
         }
     };
@@ -103,7 +112,7 @@ export default function LeagueOfLegends() {
                     </div>
                 </Container>
             </Jumbotron>
-            <SimpleBar style={{maxHeight: max_height}} autoHide={false} scrollbarMinSize={40}>
+            <SimpleBar style={{maxHeight: height - jumbotron_height}} autoHide={false} scrollbarMinSize={40}>
                 <Container className={"mb-5"}>
                     <Row>
                         {[lUpdate, lPatch, lMedia].map((element: any) => {
@@ -113,7 +122,7 @@ export default function LeagueOfLegends() {
                             return (
                                 <div className={"col-6"}>
                                     <Card className={'text-white mb-4 mr-4 mr-4 col-12 p-0 border-0 league-card'}>
-                                        <Card.Img variant={"top"} className={"w-100 border-0"}
+                                        <Card.Img variant={"top"} className={"w-100 border-0 unselectable"}
                                                   src={element['imageUrl']}/>
                                         <Card.Body>
                                             <Card.Title>
@@ -128,7 +137,12 @@ export default function LeagueOfLegends() {
                                             </Card.Text>
                                             <h5>
                                                 <button
-                                                    onClick={() => shell.openExternal(`https://na.leagueoflegends.com/en-us/${element['url']['url']}`)}
+                                                    onClick={() =>
+                                                        shell.openExternal(
+                                                            (element['link']['internal'] ?
+                                                                'https://na.leagueoflegends.com/en-us/' : '')
+                                                            + element['link']['url'])
+                                                    }
                                                     className={"card-button left ml-2 unselectable"}
                                                 >Read more
                                                 </button>
