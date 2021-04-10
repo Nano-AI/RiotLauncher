@@ -76,7 +76,7 @@ export default function Valorant() {
                             <p>
                                 <span className="bg"/>
                                 <span className="base"/>
-                                <span className="text">Play VALORANT</span>
+                                <span className="text">Launch VALORANT</span>
                             </p>
                         </a>
                     </div>

@@ -11,15 +11,14 @@ $scrollbar-color: rgb(60, 60, 60);
 }
 
 *.unselectable {
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
   -moz-user-select: -moz-none;
   -khtml-user-select: none;
   -webkit-user-select: none;
-
-  /*
-    Introduced in IE 10.
-    See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
-  */
-  -ms-user-select: none;
-  user-select: none;
 }
 
