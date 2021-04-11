@@ -21,3 +21,51 @@ $scrollbar-color: rgb(60, 60, 60);
   -khtml-user-select: none;
   -webkit-user-select: none;
 }
+
+
+.card-button {
+  display: inline-block;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  color: whitesmoke;
+  transition: color .2s;
+}
+
+.card-button:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+}
+
+.card-button:hover {
+  color: white;
+}
+
+/* Directions */
+.card-button.left:after {
+  left: -.3em;
+  top: 0;
+  height: 100%;
+  width: .08em;
+  transform: skew(-20deg);
+  transition: width .2s;
+}
+
+.card-button.left:hover:after {
+  width: calc(100% + .6em);
+}
+
+.card-button.right:after {
+  right: -.3em;
+  top: 0;
+  height: 100%;
+  width: .08em;
+  transform: skew(-20deg);
+  transition: width .2s;
+}
+
+.card-button.right:hover:after {
+  width: calc(100% + .6em);
+}

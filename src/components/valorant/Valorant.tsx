@@ -87,7 +87,7 @@ export default function Valorant() {
                             <p>
                                 <span className="bg"/>
                                 <span className="base"/>
-                                <span className="text">Launch VALORANT</span>
+                                <span className="text valorant-font">Launch VALORANT</span>
                             </p>
                         </a>
                     </div>
@@ -118,7 +118,7 @@ export default function Valorant() {
                                             <h5>
                                                 <button
                                                     onClick={() => shell.openExternal(`https://playvalorant.com/en-us/${element['url']['url']}`)}
-                                                    className={"card-button left ml-2 valorant-font unselectable"}
+                                                    className={"card-button valorant-button left ml-2 valorant-font unselectable"}
                                                 >Read more
                                                 </button>
                                             </h5>

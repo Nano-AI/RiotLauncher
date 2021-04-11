@@ -1,7 +1,7 @@
 $card-background: rgb(32, 30, 28);
 $base: #0f1923;
 $white: #ece8e1;
-$pink: rgb(19, 216, 246);
+$aqua: rgb(19, 216, 246);
 $transition: 0.3s ease-out all;
 $height: 54px;
 
@@ -37,7 +37,7 @@ $height: 54px;
     padding: 8px;
     font-size: 0.8rem;
     font-weight: 900;
-    color: $pink;
+    color: $aqua;
     text-align: center;
     text-transform: uppercase;
     text-decoration: none;
@@ -110,7 +110,7 @@ $height: 54px;
         width: 100%;
         height: 100%;
         left: 0;
-        border: 1px solid $pink;
+        border: 1px solid $aqua;
 
         &:before {
           content: "";
@@ -127,7 +127,7 @@ $height: 54px;
       & span.bg {
         left: -5%;
         position: absolute;
-        background: $pink;
+        background: $aqua;
         width: 0;
         height: 100%;
         z-index: 3;
@@ -172,8 +172,17 @@ $height: 54px;
   }
 }
 
+.league-font {
+  font-family: 'LoL', serif;
+}
+
 .league-card {
   background-color: $card-background !important;
   border-radius: 0;
   z-index: 1;
+}
+
+@font-face {
+  font-family: 'LoL';
+  src: url('../../assets/OptimusPrinceps.ttf') format('truetype');
 }

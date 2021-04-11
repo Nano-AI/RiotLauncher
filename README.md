@@ -13,6 +13,8 @@ This is an unofficial, work in progress launcher for games made by Riot Games.
 - Check if game is installed
 - Use the Riot video for Valorant https://playvalorant.com/assets/video/Retake-hero-desktop.mp4
 - Add icons next to the game's names in the side bar
+- Add update system for launcher
+- Add update system for the games
 
 ## Credits
 

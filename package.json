@@ -1,7 +1,7 @@
 {
   "name": "riotlauncher",
   "description": "An unofficial launcher for Riot Games.",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "author": "Nano-AI",
   "private": true,
   "build": {
@@ -12,6 +12,9 @@
       "build/**/*",
       "public/electron.js"
     ],
+    "win": {
+      "icon": "./public/logo.png"
+    },
     "extends": null
   },
   "main": "public/electron.js",

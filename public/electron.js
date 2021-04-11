@@ -13,12 +13,10 @@ const leagueParamaters = [
   "--launch-patchline=live"
 ];
 
-
 function createWindow() {
   const win = new BrowserWindow({
     width: 1440,
     height: 810,
-    // resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       webSecurity: false,
@@ -26,6 +24,7 @@ function createWindow() {
       enableRemoteModule: true,
       contextIsolation: false,
     },
+    icon: __dirname + '/logo.png'
   });
 
   win.setMenuBarVisibility(false);
@@ -50,9 +49,6 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
-});
-
-app.on("ready", () => {
 });
 
 ipcMain.on("launch-valorant", () => {

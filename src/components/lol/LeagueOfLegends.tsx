@@ -5,6 +5,7 @@ import lolLogo from '../../assets/league-logo.png';
 import {Card, Container, Jumbotron, Row} from "react-bootstrap";
 import './LeagueOfLegends.scss';
 import SimpleBar from "simplebar-react";
+import borderImage from '../../assets/league-border.png';
 
 const {shell, ipcRenderer} = window.require('electron');
 const request = require('request');
@@ -33,6 +34,11 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center'
+        },
+        leagueBorder: {
+            border: '10px solid transparent !important',
+            padding: '15px !important',
+            borderImage: `url(${borderImage}) 30 round !important`
         }
     }));
 
@@ -106,7 +112,7 @@ export default function LeagueOfLegends() {
                             <p>
                                 <span className="bg"/>
                                 <span className="base"/>
-                                <span className="text">Launch League</span>
+                                <span className="text league-font">Launch League</span>
                             </p>
                         </a>
                     </div>
@@ -121,12 +127,12 @@ export default function LeagueOfLegends() {
                             console.log(element)
                             return (
                                 <div className={"col-6"}>
-                                    <Card className={'text-white mb-4 mr-4 mr-4 col-12 p-0 border-0 league-card'}>
+                                    <Card className={`${classes.leagueBorder} text-white mb-4 mr-4 mr-4 col-12 p-0 border-0 league-card`}>
                                         <Card.Img variant={"top"} className={"w-100 border-0 unselectable"}
                                                   src={element['imageUrl']}/>
                                         <Card.Body>
                                             <Card.Title>
-                                                <Container className={"p-0"}>
+                                                <Container className={"p-0 league-font"}>
                                                     <span>{element['title']}</span>
                                                 </Container>
                                             </Card.Title>
@@ -143,7 +149,7 @@ export default function LeagueOfLegends() {
                                                                 'https://na.leagueoflegends.com/en-us/' : '')
                                                             + element['link']['url'])
                                                     }
-                                                    className={"card-button left ml-2 unselectable"}
+                                                    className={"league-font league-button card-button left ml-2 unselectable"}
                                                 >Read more
                                                 </button>
                                             </h5>
