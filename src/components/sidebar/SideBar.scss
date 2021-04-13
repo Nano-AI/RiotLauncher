@@ -24,3 +24,8 @@ $url-hover: rgb(200, 200, 200);
 .active {
   color: $active-url;
 }
+
+.white-logo {
+  fill: white !important;
+  filter: invert(1);
+}

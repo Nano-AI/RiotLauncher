@@ -7,6 +7,10 @@ import {HashRouter, NavLink} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SideBar.scss';
 
+import LeagueLogo from '../../assets/LeagueLogo.png';
+import ValorantLogo from '../../assets/ValorantLogo.png';
+import HomeLogo from '../../assets/Home.svg';
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -52,16 +56,23 @@ export default function SideBar() {
             >
                 <img src={riot_logo} className={'unselectable mb-5 ml-5 mt-5 mr-5 no-antialising'}
                      alt={"The Riot Games logo"}/>
-                <div className={'mt-4 ml-5 text-white'}>
+                <div className={'mt-4 ml-4 text-white'}>
                     <HashRouter>
                         <h6 className={"unselectable mb-5"}><NavLink onMouseDown={(e) => e.preventDefault()} exact
-                                                                     className={"no-url"} to={"/"}>Home</NavLink></h6>
+                                                                     className={"no-url"} to={"/"}>
+                            <img className={"mr-3 white-logo"} src={HomeLogo} height={25}/>
+                            Home
+                        </NavLink></h6>
                         <h6 className={"unselectable mb-5"}><NavLink onMouseDown={(e) => e.preventDefault()}
                                                                      className={"no-url"}
-                                                                     to={"/valorant"}>VALORANT</NavLink></h6>
+                                                                     to={"/valorant"}>
+                            <img className={"mr-3"} src={ValorantLogo} height={25}/>
+                            VALORANT
+                        </NavLink></h6>
                         <h6 className={"unselectable mb-5"}><NavLink onMouseDown={(e) => e.preventDefault()}
-                                                                     className={"no-url"} to={"/lol"}>League of
-                            Legends</NavLink>
+                                                                     className={"no-url"} to={"/lol"}>
+                            <img className={"mr-3"} src={LeagueLogo} height={25}/>
+                            League of Legends</NavLink>
                         </h6>
                         {/*<h6 className={"mb-5"}>Teamfight Tactics</h6>*/}
                         {/*<h6 className={"mb-5"}>Legends of Runeterra</h6>*/}
