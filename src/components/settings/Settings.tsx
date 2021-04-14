@@ -16,13 +16,13 @@ export default function Settings() {
     }
 
     const saveSettings = () => {
-        storage.set('settings', {riot_client_services_path: path}, function(error:any) {
+        storage.set('settings', {riot_client_services_path: path}, function (error: any) {
             if (error) throw error;
         });
     };
 
     const cancelSettings = () => {
-        storage.get('settings', (error:any, data:any) => {
+        storage.get('settings', (error: any, data: any) => {
             setPath(data['riot_client_services_path']);
         });
     };
@@ -34,10 +34,10 @@ export default function Settings() {
                     <h3>Path Settings</h3>
                     <p className={"h5 font-weight-normal"}>Riot Client Services Path</p>
                     <Form.File id="formcheck-api-custom" custom>
-                        <Form.File.Input accept={".exe"} onChange={(file:any) => {
+                        <Form.File.Input accept={".exe"} onChange={(file: any) => {
                             if (file.target.files.length !== 0)
                                 setPath(file.target.files[0].path);
-                        }} />
+                        }}/>
                         <Form.File.Label data-browse="Browse">
                             {path}
                         </Form.File.Label>
@@ -47,7 +47,7 @@ export default function Settings() {
                     <Button variant="contained" className={"mr-3"} onClick={cancelSettings}>Cancel</Button>
                     <Button variant="contained" color={"primary"} onClick={saveSettings}>Save</Button>
                 </div>
-                <br />
+                <br/>
                 <p className={"text-muted"}>Local data is stored at {storage.getDataPath()}</p>
             </Container>
         </div>

@@ -20,6 +20,7 @@ function useWindowSize() {
         function updateSize() {
             setSize([window.innerWidth, window.innerHeight]);
         }
+
         window.addEventListener('resize', updateSize);
         updateSize();
         return () => window.removeEventListener('resize', updateSize);
@@ -142,10 +143,10 @@ export default function LeagueOfLegends() {
                         {[lUpdate, lPatch, lMedia].map((element: any) => {
                             if (!element)
                                 return
-                            console.log(element)
                             return (
                                 <div className={"col-6"}>
-                                    <Card className={`${classes.leagueBorder} text-white mb-4 mr-4 mr-4 col-12 p-0 border-0 league-card`}>
+                                    <Card
+                                        className={`${classes.leagueBorder} text-white mb-4 mr-4 mr-4 col-12 p-0 border-0 league-card`}>
                                         <Card.Img variant={"top"} className={"w-100 border-0 unselectable"}
                                                   src={element['imageUrl']}/>
                                         <Card.Body>
