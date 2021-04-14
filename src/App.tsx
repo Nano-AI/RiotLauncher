@@ -7,6 +7,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import Valorant from "./components/valorant/Valorant";
 import LeagueOfLegends from "./components/lol/LeagueOfLegends";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Settings from "./components/settings/Settings";
 
 const drawerWidth = 240;
 
@@ -33,6 +34,7 @@ function App() {
                     <Route exact path={'/'} component={Home} />
                     <Route path={'/valorant'} component={Valorant} />
                     <Route path={'/lol'} component={LeagueOfLegends} />
+                    <Route path={'/settings'} component={Settings} />
                 </HashRouter>
                 {/*<Route path={'/'} component={TeamfightTactics} />*/}
                 {/*<Route path={'/'} component={LegendsOfRuneterra} />*/}

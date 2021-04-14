@@ -1,5 +1,5 @@
 # Riot Launcher
-
+> I have only tested this on Windows, so don't expect it to work on other operating systems.
 This is an unofficial, work in progress launcher for games made by Riot Games.
 
 ## Screen Shots
@@ -25,3 +25,5 @@ Riot Games Launcher Design Idea - https://dribbble.com/shots/9369993-Riot-Games-
 Play VALORANT Button Idea - https://codepen.io/ryne/pen/PoPoqgO
 
 Hover Button - https://codepen.io/GRA0007/pen/zYxGrxd
+
+Icons - https://primer.style/octicons/

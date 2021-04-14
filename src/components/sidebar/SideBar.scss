@@ -1,6 +1,8 @@
 $active-url: white;
 $url-color: rgb(124, 124, 124);
 $url-hover: rgb(200, 200, 200);
+$settings-color: rgb(225, 225, 225);
+$settings-color-hover: white;
 
 .no-antialising {
   image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
@@ -28,4 +30,30 @@ $url-hover: rgb(200, 200, 200);
 .white-logo {
   fill: white !important;
   filter: invert(1);
+}
+
+.center-image {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+#settings-div {
+  color: whitesmoke;
+}
+
+#settings {
+  cursor: pointer !important;
+  color: $settings-color;
+  display: flex;
+  align-items:center;
+}
+
+#settings:hover {
+  color: $settings-color-hover;
 }

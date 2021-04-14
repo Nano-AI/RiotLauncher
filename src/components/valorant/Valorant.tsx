@@ -5,6 +5,7 @@ import {Card, Container, Jumbotron, Row} from "react-bootstrap";
 import './Valorant.scss';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 
 const {shell, ipcRenderer} = window.require('electron');
 const request = require('request');
@@ -12,12 +13,15 @@ const request = require('request');
 const jumbotron_height = 350;
 const newsLang = "en-us";
 
+// @ts-ignore: Object is possibly 'null'.
+
 function useWindowSize() {
     const [size, setSize] = useState([0, 0]);
     useLayoutEffect(() => {
         function updateSize() {
             setSize([window.innerWidth, window.innerHeight]);
         }
+
         window.addEventListener('resize', updateSize);
         updateSize();
         return () => window.removeEventListener('resize', updateSize);
@@ -38,8 +42,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Valorant() {
     const classes = useStyles();
-    const [vNews, setVNews] = useState([]);
+    const [vNews, setVNews] = useState<null | any>(null);
     const [width, height] = useWindowSize();
+    const [error, setError] = useState(null);
 
     React.useEffect(() => {
         fetchData();
@@ -65,10 +70,27 @@ export default function Valorant() {
 
     const launchValorant = () => {
         ipcRenderer.send('launch-valorant', null);
+        ipcRenderer.on('launch-valorant-error', (event: any, args: any) => {
+            setError(args);
+        });
     };
 
     return (
         <div>
+            <Dialog
+                open={error != null}
+                onClose={() => setError(null)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Riot Client Services Path</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        The path for Riot Client Services hasn't been configured to the correct
+                        directory or the file doesn't exist anymore.
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
             <Jumbotron fluid className={`vertical-center rounded-0 ${classes.jumboBackground}`}>
                 <Container>
                     <div className={"align-items-center w-100 d-flex justify-content-center"}>
@@ -96,8 +118,7 @@ export default function Valorant() {
             <SimpleBar style={{maxHeight: height - jumbotron_height}} autoHide={false} scrollbarMinSize={40}>
                 <Container className={"mb-5"}>
                     <Row>
-                        {vNews.map((element) => {
-                            console.log(element)
+                        {vNews ? vNews!.map((element: any) => {
                             return (
                                 <div className={"col-6"}>
                                     <Card className={'text-white mb-4 mr-4 mr-4 col-12 p-0 border-0 valorant-card'}>
@@ -126,7 +147,7 @@ export default function Valorant() {
                                     </Card>
                                 </div>
                             );
-                        })}
+                        }) : ''}
                     </Row>
                 </Container>
             </SimpleBar>

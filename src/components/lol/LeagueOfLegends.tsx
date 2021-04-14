@@ -6,6 +6,7 @@ import {Card, Container, Jumbotron, Row} from "react-bootstrap";
 import './LeagueOfLegends.scss';
 import SimpleBar from "simplebar-react";
 import borderImage from '../../assets/league-border.png';
+import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 
 const {shell, ipcRenderer} = window.require('electron');
 const request = require('request');
@@ -48,7 +49,7 @@ export default function LeagueOfLegends() {
     const [lUpdate, setLUpdate] = useState(null);
     const [lMedia, setLMedia] = useState(null);
     const [width, height] = useWindowSize();
-    // const [lNews, setLNews] = useState([]);
+    const [error, setError] = useState(null);
 
     React.useEffect(() => {
         fetchData();
@@ -94,10 +95,27 @@ export default function LeagueOfLegends() {
 
     const launchLeague = () => {
         ipcRenderer.send('launch-league', null);
+        ipcRenderer.on('launch-league-error', (event: any, args: any) => {
+            setError(args);
+        });
     };
 
     return (
         <div>
+            <Dialog
+                open={error != null}
+                onClose={() => setError(null)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Riot Client Services Path</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        The path for Riot Client Services hasn't been configured to the correct
+                        directory or the file doesn't exist anymore.
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
             <Jumbotron fluid className={`vertical-center rounded-0 p-0 unselectable ${classes.jumboBackground}`}>
                 <Container>
                     <div className={"align-items-center w-100 d-flex justify-content-center"}>
