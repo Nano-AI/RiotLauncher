@@ -31,11 +31,11 @@ async function createWindow() {
   win.setMenuBarVisibility(false);
   // const drives = await drivelist.list();
   storage.get('settings', async (error, data) => {
-      if (!data) {
-        storage.set('settings', {riot_client_services_path:'C:\\Riot Games\\Riot Client\\RiotClientServices.exe'}, (error) => {
-          if (error) throw error;
-        });
-      }
+    if (!data) {
+      storage.set('settings', {riot_client_services_path: 'C:\\Riot Games\\Riot Client\\RiotClientServices.exe'}, (error) => {
+        if (error) throw error;
+      });
+    }
   });
 
   win.loadURL(
@@ -66,8 +66,7 @@ ipcMain.on("launch-valorant", (event, args) => {
     child(data.riot_client_services_path, valorantParamaters, (err, data) => {
       if (err) {
         event.reply('launch-valorant-error', err);
-      }
-      else console.log(data);
+      } else console.log(data);
     });
   });
 });
@@ -78,8 +77,7 @@ ipcMain.on("launch-league", (event, args) => {
     child(data.riot_client_services_path, leagueParamaters, (err, data) => {
       if (err) {
         event.reply('launch-league-error', err);
-      }
-      else console.log(data);
+      } else console.log(data);
     })
   });
 });
