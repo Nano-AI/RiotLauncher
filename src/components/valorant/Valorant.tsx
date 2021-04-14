@@ -5,15 +5,12 @@ import {Card, Container, Jumbotron, Row} from "react-bootstrap";
 import './Valorant.scss';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {GetValorantNews} from "../../api/GetNews";
 
 const {shell, ipcRenderer} = window.require('electron');
-const request = require('request');
 
 const jumbotron_height = 350;
-const newsLang = "en-us";
-
-// @ts-ignore: Object is possibly 'null'.
 
 function useWindowSize() {
     const [size, setSize] = useState([0, 0]);
@@ -47,26 +44,13 @@ export default function Valorant() {
     const [error, setError] = useState(null);
 
     React.useEffect(() => {
-        fetchData();
+        async function getValorant() {
+            const ValorantNews:any = await GetValorantNews();
+            setVNews(ValorantNews);
+        }
+        if (!vNews)
+            getValorant()
     }, []);
-
-    const fetchData = () => {
-        request(
-            'https://playvalorant.com/page-data/' + newsLang + '/news/page-data.json',
-            {json: true}, (err: any, res: any, body: any) => {
-                if (err) {
-                    return console.log(err);
-                }
-                try {
-                    console.log(body['result']['data'])
-                    // let news = [...body['result']['data']['contentstackNews']['featured_news']['reference']];
-                    setVNews(body['result']['data']['contentstackNews']['featured_news']['reference']);
-
-                } catch (error) {
-                    console.error(error);
-                }
-            });
-    };
 
     const launchValorant = () => {
         ipcRenderer.send('launch-valorant', null);
@@ -135,7 +119,6 @@ export default function Valorant() {
                                             <Card.Text>
                                                 {element['description']}
                                             </Card.Text>
-                                            {/*<a href={`https://playvalorant.com/en-us/${element['url']['url']}`}>Go somewhere</a>*/}
                                             <h5>
                                                 <button
                                                     onClick={() => shell.openExternal(`https://playvalorant.com/en-us/${element['url']['url']}`)}

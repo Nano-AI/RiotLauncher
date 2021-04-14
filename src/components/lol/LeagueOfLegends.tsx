@@ -7,6 +7,7 @@ import './LeagueOfLegends.scss';
 import SimpleBar from "simplebar-react";
 import borderImage from '../../assets/league-border.png';
 import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {GetLeagueNews} from '../../api/GetNews';
 
 const {shell, ipcRenderer} = window.require('electron');
 const request = require('request');
@@ -46,53 +47,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function LeagueOfLegends() {
     const classes = useStyles();
-    const [lPatch, setLPatch] = useState(null);
-    const [lUpdate, setLUpdate] = useState(null);
-    const [lMedia, setLMedia] = useState(null);
+    const [leagueNews, setLeagueNews] = useState<null | any>(null);
     const [width, height] = useWindowSize();
     const [error, setError] = useState(null);
 
     React.useEffect(() => {
-        fetchData();
+        async function getLeague() {
+            const LeagueNews:any = await GetLeagueNews();
+            setLeagueNews(LeagueNews);
+        }
+        if (!leagueNews)
+            getLeague();
     });
 
-    const fetchData = () => {
-        if (!lUpdate) {
-            request('https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/'
-                + newsLang + '/production/' + newsLang + '/page-data/news/game-updates/page-data.json', {json: true},
-                (err: any, res: any, body: any) => {
-                    if (err) {
-                        return console.log(err);
-                    }
-                    const latestUpdate = body["result"]["pageContext"]["data"]["sections"][0]["props"]["articles"][0];
-                    setLUpdate(latestUpdate);
-                    // setLNews([...lNews, latestUpdate]);
-                });
-        }
-        if (!lPatch) {
-            request('https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/'
-                + newsLang + '/production/' + newsLang + '/page-data/news/tags/patch-notes/page-data.json', {json: true},
-                (err: any, res: any, body: any) => {
-                    if (err) {
-                        return console.log(err);
-                    }
-                    const latestPatch = body["result"]["pageContext"]["data"]["sections"][0]["props"]["articles"][0];
-                    setLPatch(latestPatch);
-                });
-        }
-        if (!lMedia) {
-            request(
-                'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/'
-                + newsLang + '/production/' + newsLang +
-                '/page-data/news/media/page-data.json', {json: true}, (err: any, res: any, body: any) => {
-                    if (err) {
-                        return console.log(err);
-                    }
-                    const latestMedia = body["result"]["pageContext"]["data"]["sections"][0]["props"]["articles"][0];
-                    setLMedia(latestMedia);
-                });
-        }
-    };
 
     const launchLeague = () => {
         ipcRenderer.send('launch-league', null);
@@ -140,7 +107,7 @@ export default function LeagueOfLegends() {
             <SimpleBar style={{maxHeight: height - jumbotron_height}} autoHide={false} scrollbarMinSize={40}>
                 <Container className={"mb-5"}>
                     <Row>
-                        {[lUpdate, lPatch, lMedia].map((element: any) => {
+                        {leagueNews ? leagueNews!.map((element: any) => {
                             if (!element)
                                 return
                             return (
@@ -168,7 +135,8 @@ export default function LeagueOfLegends() {
                                                                 'https://na.leagueoflegends.com/en-us/' : '')
                                                             + element['link']['url'])
                                                     }
-                                                    className={"league-font league-button card-button left ml-2 unselectable"}
+                                                    // className={"league-font league-button card-button left ml-2 unselectable"}
+                                                    className={"card-button league-button left ml-2 league-font unselectable"}
                                                 >Read more
                                                 </button>
                                             </h5>
@@ -176,7 +144,7 @@ export default function LeagueOfLegends() {
                                     </Card>
                                 </div>
                             );
-                        })}
+                        }) : ''}
                     </Row>
                 </Container>
             </SimpleBar>

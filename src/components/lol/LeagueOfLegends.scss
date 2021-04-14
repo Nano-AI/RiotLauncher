@@ -172,6 +172,10 @@ $height: 54px;
   }
 }
 
+.league-button:after {
+  background-color: $aqua;
+}
+
 .league-font {
   font-family: 'LoL', serif;
 }

@@ -74,6 +74,8 @@ ipcMain.on("launch-valorant", (event, args) => {
 ipcMain.on("launch-league", (event, args) => {
   storage.get('settings', function (error, data) {
     if (error) throw error;
+    // const random = 'D:\\Riot Games\\Riot Client\\RiotClientServices.exe';
+    // child(random, leagueParamaters, (err, data) => {
     child(data.riot_client_services_path, leagueParamaters, (err, data) => {
       if (err) {
         event.reply('launch-league-error', err);
