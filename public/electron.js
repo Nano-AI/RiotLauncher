@@ -1,7 +1,6 @@
 const {app, BrowserWindow, ipcMain, shell} = require("electron");
 const path = require("path");
 const child = require("child_process").execFile;
-const isDev = require("electron-is-dev");
 const storage = require('electron-json-storage');
 const http = require('https'); // or 'https' for https:// URLs
 const fs = require('fs');
@@ -45,7 +44,6 @@ async function createWindow() {
     width: 1440,
     height: 810,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
       webSecurity: false,
       nodeIntegration: true,
       enableRemoteModule: true,
@@ -64,7 +62,7 @@ async function createWindow() {
   });
 
   win.loadURL(
-      isDev
+    !app.isPackaged
           ? "http://localhost:3000"
           : `file://${path.join(__dirname, "../build/index.html")}`
   );
