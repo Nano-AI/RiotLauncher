@@ -8,6 +8,7 @@ import SimpleBar from "simplebar-react";
 import borderImage from '../../assets/league-border.png';
 import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import {GetLeagueNews} from '../../api/GetNews';
+import LeagueCard from "../league-card/LeagueCard";
 
 const {shell, ipcRenderer} = window.require('electron');
 const request = require('request');
@@ -112,36 +113,7 @@ export default function LeagueOfLegends() {
                                 return
                             return (
                                 <div className={"col-6"}>
-                                    <Card
-                                        className={`${classes.leagueBorder} text-white mb-4 mr-4 mr-4 col-12 p-0 border-0 league-card`}>
-                                        <Card.Img variant={"top"} className={"w-100 border-0 unselectable"}
-                                                  src={element['imageUrl']}/>
-                                        <Card.Body>
-                                            <Card.Title>
-                                                <Container className={"p-0 league-font"}>
-                                                    <span>{element['title']}</span>
-                                                </Container>
-                                            </Card.Title>
-                                            <Card.Subtitle
-                                                className="mb-2 text-muted">{new Date(element['date']).toLocaleString(undefined).replaceAll(":00", "")}</Card.Subtitle>
-                                            <Card.Text>
-                                                {element['description']}
-                                            </Card.Text>
-                                            <h5>
-                                                <button
-                                                    onClick={() =>
-                                                        shell.openExternal(
-                                                            (element['link']['internal'] ?
-                                                                'https://na.leagueoflegends.com/en-us/' : '')
-                                                            + element['link']['url'])
-                                                    }
-                                                    // className={"league-font league-button card-button left ml-2 unselectable"}
-                                                    className={"card-button league-button left ml-2 league-font unselectable"}
-                                                >Read more
-                                                </button>
-                                            </h5>
-                                        </Card.Body>
-                                    </Card>
+                                    <LeagueCard news={element}/>
                                 </div>
                             );
                         }) : ''}

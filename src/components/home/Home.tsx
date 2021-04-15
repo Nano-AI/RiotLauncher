@@ -2,11 +2,14 @@ import React, {useLayoutEffect, useState} from "react";
 import './Home.scss';
 import jumbo_background from '../../assets/home-background.png';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {Row} from "react-bootstrap";
+import {Container, Row} from "react-bootstrap";
 import {Button, Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import SimpleBar from "simplebar-react";
 import LeaguePhoto from "../../assets/LeagueOfLegendsLaunch.jpg";
 import ValorantPhoto from '../../assets/ValorantLaunch.jpg';
+import LeagueCard from "../league-card/LeagueCard";
+import {GetLeagueNews, GetValorantNews} from "../../api/GetNews";
+import ValorantCard from "../valorant-card/ValorantCard";
 
 const {shell, ipcRenderer} = window.require('electron');
 const request = require('request');
@@ -35,7 +38,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         valorantLaunch: {
             backgroundImage: `url(${ValorantPhoto})`,
-            backgroundSize: '125%'
         }
     }));
 
@@ -57,10 +59,8 @@ export default function Home() {
     const classes = useStyles();
     const [width, height] = useWindowSize();
     const [error, setError] = useState(null);
-    const [lPatch, setLPatch] = useState(null);
-    const [lUpdate, setLUpdate] = useState(null);
-    const [lMedia, setLMedia] = useState(null);
-    const [vNews, setVNews] = useState<null | any>(null);
+    const [leagueNews, setLeagueNews] = useState<null | any>(null);
+    const [valorantNews, setValorantNews] = useState<null | any>(null);
 
     ipcRenderer.on('launch-league-error', (event: any, args: any) => {
         setError(args);
@@ -70,63 +70,25 @@ export default function Home() {
     });
 
     React.useEffect(() => {
-        fetchData();
+        async function getLeague() {
+            if (!leagueNews) {
+                const LeagueNews: any = await GetLeagueNews();
+                setLeagueNews(LeagueNews);
+            }
+        }
+
+        async function getValorant() {
+            if (!valorantNews) {
+                const ValorantNews: any = await GetValorantNews();
+                setValorantNews(ValorantNews);
+            }
+        }
+
+        if (!leagueNews) {
+            getLeague();
+            getValorant();
+        }
     }, []);
-
-    const fetchData = () => {
-        if (!lUpdate) {
-            request('https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/'
-                + newsLang + '/production/' + newsLang + '/page-data/news/game-updates/page-data.json', {json: true},
-                (err: any, res: any, body: any) => {
-                    if (err) {
-                        return console.log(err);
-                    }
-                    const latestUpdate = body["result"]["pageContext"]["data"]["sections"][0]["props"]["articles"][0];
-                    setLUpdate(latestUpdate);
-                    // setLNews([...lNews, latestUpdate]);
-                });
-        }
-        if (!lPatch) {
-            request('https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/'
-                + newsLang + '/production/' + newsLang + '/page-data/news/tags/patch-notes/page-data.json', {json: true},
-                (err: any, res: any, body: any) => {
-                    if (err) {
-                        return console.log(err);
-                    }
-                    const latestPatch = body["result"]["pageContext"]["data"]["sections"][0]["props"]["articles"][0];
-                    setLPatch(latestPatch);
-                });
-        }
-        if (!lMedia) {
-            request(
-                'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/'
-                + newsLang + '/production/' + newsLang +
-                '/page-data/news/media/page-data.json', {json: true}, (err: any, res: any, body: any) => {
-                    if (err) {
-                        return console.log(err);
-                    }
-                    const latestMedia = body["result"]["pageContext"]["data"]["sections"][0]["props"]["articles"][0];
-                    setLMedia(latestMedia);
-                });
-        }
-        if (!vNews) {
-            request(
-                'https://playvalorant.com/page-data/' + newsLang + '/news/page-data.json',
-                {json: true}, (err: any, res: any, body: any) => {
-                    if (err) {
-                        return console.log(err);
-                    }
-                    try {
-                        console.log(body['result']['data'])
-                        // let news = [...body['result']['data']['contentstackNews']['featured_news']['reference']];
-                        setVNews(body['result']['data']['contentstackNews']['featured_news']['reference']);
-
-                    } catch (error) {
-                        console.error(error);
-                    }
-                });
-        }
-    };
 
     return (
         <div className={"h-100"}>
@@ -147,9 +109,34 @@ export default function Home() {
 
             <div className={`jumbotron rounded-0 p-0 ${classes.jumboBackground}`}>
             </div>
+
             <Row className={"col-12 h-100 m-0"}>
                 <div className={"col-10 pl-0"}>
-
+                    <SimpleBar style={{maxHeight: height - jumbotron_height}} autoHide={false} scrollbarMinSize={40}>
+                        <Container className={"mb-5"}>
+                            {/*<h4>League of Legends News</h4>*/}
+                            <Row>
+                                {valorantNews ? valorantNews!.map((element: any) => {
+                                    if (!element)
+                                        return
+                                    return (
+                                        <div className={"col-4"}>
+                                            <ValorantCard news={element}/>
+                                        </div>
+                                    );
+                                }) : ''}
+                                {leagueNews ? leagueNews!.map((element: any) => {
+                                    if (!element)
+                                        return
+                                    return (
+                                        <div className={"col-4"}>
+                                            <LeagueCard news={element}/>
+                                        </div>
+                                    );
+                                }) : ''}
+                            </Row>
+                        </Container>
+                    </SimpleBar>
                 </div>
                 <div className={"col-2 p-0 h-100"} style={{minHeight: height - jumbotron_height}}>
                     <Button variant="contained"

@@ -7,6 +7,7 @@ import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import {GetValorantNews} from "../../api/GetNews";
+import ValorantCard from "../valorant-card/ValorantCard";
 
 const {shell, ipcRenderer} = window.require('electron');
 
@@ -105,29 +106,7 @@ export default function Valorant() {
                         {vNews ? vNews!.map((element: any) => {
                             return (
                                 <div className={"col-6"}>
-                                    <Card className={'text-white mb-4 mr-4 mr-4 col-12 p-0 border-0 valorant-card'}>
-                                        <Card.Img variant={"top"} className={"w-100 border-0 unselectable"}
-                                                  src={element['banner']['url']}/>
-                                        <Card.Body>
-                                            <Card.Title className={"valorant-font"}>
-                                                <Container className={"p-0"}>
-                                                    <span>{element['title']}</span>
-                                                </Container>
-                                            </Card.Title>
-                                            <Card.Subtitle
-                                                className="mb-2 text-muted">{new Date(element['date']).toLocaleString(undefined).replaceAll(":00", "")}</Card.Subtitle>
-                                            <Card.Text>
-                                                {element['description']}
-                                            </Card.Text>
-                                            <h5>
-                                                <button
-                                                    onClick={() => shell.openExternal(`https://playvalorant.com/en-us/${element['url']['url']}`)}
-                                                    className={"card-button valorant-button left ml-2 valorant-font unselectable"}
-                                                >Read more
-                                                </button>
-                                            </h5>
-                                        </Card.Body>
-                                    </Card>
+                                    <ValorantCard news={element} />
                                 </div>
                             );
                         }) : ''}

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {Container, Form} from "react-bootstrap";
+import {NavLink} from "react-router-dom";
 import './Settings.scss';
 import {Button} from "@material-ui/core";
 
@@ -44,7 +45,10 @@ export default function Settings() {
                     </Form.File>
                 </form>
                 <div className={"m-4"} id={"save-button"}>
-                    <Button variant="contained" className={"mr-3"} onClick={cancelSettings}>Cancel</Button>
+                    <NavLink onMouseDown={(e) => e.preventDefault()}
+                             className={"no-url"} to={"/"} exact>
+                        <Button variant="contained" className={"mr-3"}
+                                onClick={cancelSettings}>Cancel</Button></NavLink>
                     <Button variant="contained" color={"primary"} onClick={saveSettings}>Save</Button>
                 </div>
                 <br/>
