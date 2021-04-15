@@ -5,6 +5,7 @@ import './Settings.scss';
 import {Button} from "@material-ui/core";
 
 const storage = window.require('electron-json-storage');
+const {remote} = window.require("electron");
 
 export default function Settings() {
     const [path, setPath] = useState(null);
@@ -44,6 +45,10 @@ export default function Settings() {
                         </Form.File.Label>
                     </Form.File>
                 </form>
+                <div id={"version-text"}>
+                    <p>Version Number: {remote.app.getVersion()}
+                        <p className={"text-muted"}>Local data is stored at {storage.getDataPath()}</p></p>
+                </div>
                 <div className={"m-4"} id={"save-button"}>
                     <NavLink onMouseDown={(e) => e.preventDefault()}
                              className={"no-url"} to={"/"} exact>
@@ -52,7 +57,6 @@ export default function Settings() {
                     <Button variant="contained" color={"primary"} onClick={saveSettings}>Save</Button>
                 </div>
                 <br/>
-                <p className={"text-muted"}>Local data is stored at {storage.getDataPath()}</p>
             </Container>
         </div>
     );
