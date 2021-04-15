@@ -3,7 +3,7 @@ import './Home.scss';
 import jumbo_background from '../../assets/home-background.png';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Container, Row} from "react-bootstrap";
-import {Button, Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import SimpleBar from "simplebar-react";
 import LeaguePhoto from "../../assets/LeagueOfLegendsLaunch.jpg";
 import ValorantPhoto from '../../assets/ValorantLaunch.jpg';
@@ -11,12 +11,10 @@ import LeagueCard from "../league-card/LeagueCard";
 import {GetLeagueNews, GetValorantNews} from "../../api/GetNews";
 import ValorantCard from "../valorant-card/ValorantCard";
 
-const {shell, ipcRenderer} = window.require('electron');
-const request = require('request');
+const {remote, ipcRenderer} = window.require('electron');
 
 const jumbotron_height = 350;
 const quickLaunchButtonHeight = 100;
-const newsLang = "en-us";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -59,14 +57,25 @@ export default function Home() {
     const classes = useStyles();
     const [width, height] = useWindowSize();
     const [error, setError] = useState(null);
+    const [update, setUpdate] = useState<boolean>(false);
+    const [updateText, setUpdateText] = useState<any>(null);
     const [leagueNews, setLeagueNews] = useState<null | any>(null);
     const [valorantNews, setValorantNews] = useState<null | any>(null);
 
     ipcRenderer.on('launch-league-error', (event: any, args: any) => {
         setError(args);
     });
+
     ipcRenderer.on('launch-valorant-error', (event: any, args: any) => {
         setError(args);
+    });
+
+    ipcRenderer.on('get-update', (event: any, args: any) => {
+        setUpdate(true);
+        if (!updateText) {
+            setUpdateText(args);
+            console.log(args);
+        }
     });
 
     React.useEffect(() => {
@@ -84,11 +93,20 @@ export default function Home() {
             }
         }
 
-        if (!leagueNews) {
+        if (!leagueNews)
             getLeague();
-            getValorant();
-        }
+        if (!valorantNews)
+            getValorant()
+        ipcRenderer.send('get-update', null);
     }, []);
+
+    const handleUpdate = () => {
+        ipcRenderer.send('update-client', updateText);
+    };
+
+    const handleClose = () => {
+        setUpdate(false);
+    };
 
     return (
         <div className={"h-100"}>
@@ -107,6 +125,28 @@ export default function Home() {
                 </DialogContent>
             </Dialog>
 
+            <Dialog
+                open={update}
+                keepMounted
+                onClose={handleClose}
+            >
+                <DialogTitle>Update Available</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="update-text">
+                        {updateText ?
+                            `You're currently at version ${remote.app.getVersion()} but there is a newer version available (${updateText!['tag_name']}).\n${updateText!['body']}` : ''}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Remind Later
+                    </Button>
+                    <Button onClick={handleUpdate} color="primary">
+                        Update
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             <div className={`jumbotron rounded-0 p-0 ${classes.jumboBackground}`}>
             </div>
 
@@ -114,7 +154,6 @@ export default function Home() {
                 <div className={"col-10 pl-0"}>
                     <SimpleBar style={{maxHeight: height - jumbotron_height}} autoHide={false} scrollbarMinSize={40}>
                         <Container className={"mb-5"}>
-                            {/*<h4>League of Legends News</h4>*/}
                             <Row>
                                 {valorantNews ? valorantNews!.map((element: any) => {
                                     if (!element)

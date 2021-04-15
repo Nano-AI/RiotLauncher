@@ -1,7 +1,7 @@
 {
   "name": "riotlauncher",
   "description": "An unofficial launcher for Riot Games.",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "author": "Nano-AI",
   "private": true,
   "build": {

@@ -1,8 +1,13 @@
-const {app, BrowserWindow, ipcMain} = require("electron");
+const {app, BrowserWindow, ipcMain, shell} = require("electron");
 const path = require("path");
 const child = require("child_process").execFile;
 const isDev = require("electron-is-dev");
 const storage = require('electron-json-storage');
+const http = require('https'); // or 'https' for https:// URLs
+const fs = require('fs');
+const request = require('request');
+
+const githubReleaseAPI = "https://api.github.com/repos/Nano-AI/RiotLauncher/releases/latest";
 
 const valorantParamaters = [
   "--launch-product=valorant",
@@ -13,6 +18,27 @@ const leagueParamaters = [
   "--launch-product=league_of_legends",
   "--launch-patchline=live"
 ];
+
+var latestRelease = null;
+
+function GetAPI(url) {
+  return new Promise(function (resolve, reject) {
+    request(url, {
+      method: 'GET',
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "User-Agent": "MY-UA-STRING"
+      }, json: true
+    }, function (error, res, body) {
+      if (!error && res.statusCode === 200) {
+        resolve(body);
+      } else {
+        reject(error);
+      }
+    });
+  });
+}
 
 async function createWindow() {
   const win = new BrowserWindow({
@@ -29,7 +55,6 @@ async function createWindow() {
   });
 
   win.setMenuBarVisibility(false);
-  // const drives = await drivelist.list();
   storage.get('settings', async (error, data) => {
     if (!data) {
       storage.set('settings', {riot_client_services_path: 'C:\\Riot Games\\Riot Client\\RiotClientServices.exe'}, (error) => {
@@ -55,9 +80,8 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
+  if (process.platform !== "darwin")
     app.quit();
-  }
 });
 
 ipcMain.on("launch-valorant", (event, args) => {
@@ -82,4 +106,19 @@ ipcMain.on("launch-league", (event, args) => {
       } else console.log(data);
     })
   });
+});
+
+ipcMain.on('get-update', async (event, args) => {
+  let githubAPI = latestRelease;
+  if (!latestRelease) {
+    githubAPI = await GetAPI(githubReleaseAPI).catch(e => console.error(e));
+    latestRelease = githubAPI;
+  }
+  if (githubAPI['tag_name'] === 'v' + app.getVersion() || githubAPI['tag_name'] === app.getVersion())
+    return;
+  event.reply('get-update', githubAPI);
+});
+
+ipcMain.on('update-client', (event, args) => {
+  shell.openExternal(args['assets'][0]['browser_download_url']);
 });
