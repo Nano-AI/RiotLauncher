@@ -1,5 +1,4 @@
 import { Card, Container } from 'react-bootstrap';
-import React from 'react';
 
 const { shell } = window.require('electron');
 

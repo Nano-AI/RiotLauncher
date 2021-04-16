@@ -69,6 +69,7 @@ export default function SideBar() {
                   className={'align-middle mr-3 white-logo center-image'}
                   src={HomeLogo}
                   height={iconHeight}
+                  alt="Home Logo"
                 />
                 Home
               </NavLink>
@@ -79,6 +80,7 @@ export default function SideBar() {
                   className={'align-middle mr-3 center-image'}
                   src={ValorantLogo}
                   height={iconHeight}
+                  alt="Valorant Logo"
                 />
                 VALORANT
               </NavLink>
@@ -89,6 +91,7 @@ export default function SideBar() {
                   className={'align-middle mr-3 center-image'}
                   src={LeagueLogo}
                   height={iconHeight}
+                  alt="Leauge Logo"
                 />
                 League of Legends
               </NavLink>
@@ -100,7 +103,7 @@ export default function SideBar() {
                   className={'no-url'}
                   to={'/settings'}
                 >
-                  <img src={GearCog} className={'align-middle pr-2 white-logo'} />
+                  <img src={GearCog} className={'align-middle pr-2 white-logo'} alt="Gear Icon" />
                   Settings
                 </NavLink>
               </h5>

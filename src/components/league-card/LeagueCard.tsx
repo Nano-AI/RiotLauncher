@@ -1,5 +1,4 @@
 import { Card, Container } from 'react-bootstrap';
-import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import league_background from '../../assets/league-background.jpg';
 import borderImage from '../../assets/league-border.png';

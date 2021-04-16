@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import './Home.scss';
 import jumbo_background from '../../assets/home-background.png';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Container, Row } from 'react-bootstrap';
 import {
   Button,
@@ -23,7 +23,7 @@ const { remote, ipcRenderer } = window.require('electron');
 const jumbotron_height = 350;
 const quickLaunchButtonHeight = 100;
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     jumboBackground: {
       height: jumbotron_height,
@@ -70,15 +70,11 @@ export default function Home() {
   const [leagueNews, setLeagueNews] = useState<null | any>(null);
   const [valorantNews, setValorantNews] = useState<null | any>(null);
 
-  ipcRenderer.on('launch-league-error', (event: any, args: any) => {
-    setError(args);
-  });
+  ipcRenderer.on('launch-league-error', (_: any, args: any) => setError(args));
 
-  ipcRenderer.on('launch-valorant-error', (event: any, args: any) => {
-    setError(args);
-  });
+  ipcRenderer.on('launch-valorant-error', (_: any, args: any) => setError(args));
 
-  ipcRenderer.on('get-update', (event: any, args: any) => {
+  ipcRenderer.on('get-update', (_: any, args: any) => {
     setUpdate(true);
     if (!updateText) {
       setUpdateText(args);
@@ -106,13 +102,8 @@ export default function Home() {
     ipcRenderer.send('get-update', null);
   }, []);
 
-  const handleUpdate = () => {
-    ipcRenderer.send('update-client', updateText);
-  };
-
-  const handleClose = () => {
-    setUpdate(false);
-  };
+  const handleUpdate = () => ipcRenderer.send('update-client', updateText);
+  const handleClose = () => setUpdate(false);
 
   return (
     <div className={'h-100'}>
@@ -137,9 +128,9 @@ export default function Home() {
           <DialogContentText id="update-text">
             {updateText
               ? `You're currently at version ${remote.app.getVersion()} but there is a newer version available (${
-                  updateText!['tag_name']
-                }).\n${updateText!['body']}`
-              : ''}
+                  updateText['tag_name']
+                }).\n${updateText['body']}`
+              : null}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -164,25 +155,25 @@ export default function Home() {
             <Container className={'mb-5'}>
               <Row>
                 {valorantNews
-                  ? valorantNews!.map((element: any) => {
-                      if (!element) return;
+                  ? valorantNews.map((element: any) => {
+                      if (!element) return null;
                       return (
                         <div className={'col-4'}>
                           <ValorantCard news={element} />
                         </div>
                       );
                     })
-                  : ''}
+                  : null}
                 {leagueNews
-                  ? leagueNews!.map((element: any) => {
-                      if (!element) return;
+                  ? leagueNews.map((element: any) => {
+                      if (!element) return null;
                       return (
                         <div className={'col-4'}>
                           <LeagueCard news={element} />
                         </div>
                       );
                     })
-                  : ''}
+                  : null}
               </Row>
             </Container>
           </SimpleBar>
@@ -191,16 +182,12 @@ export default function Home() {
           <Button
             variant="contained"
             className={`w-100 col-12 mb-3 ${classes.quickLaunchButton} ${classes.leagueQuickLaunch}`}
-            onClick={() => {
-              ipcRenderer.send('launch-league', null);
-            }}
+            onClick={() => ipcRenderer.send('launch-league', null)}
           />
           <Button
             variant="contained"
             className={`w-100 col-12 ${classes.quickLaunchButton} ${classes.valorantLaunch}`}
-            onClick={() => {
-              ipcRenderer.send('launch-valorant', null);
-            }}
+            onClick={() => ipcRenderer.send('launch-valorant', null)}
           />
         </div>
       </Row>

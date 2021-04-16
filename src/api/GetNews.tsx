@@ -1,55 +1,29 @@
-const request = require('request');
-const newsLang = 'en-us';
+import request from 'request';
 
-async function GetValorantNews() {
-  let valorantNews: any = await GetAPI(
-    'https://playvalorant.com/page-data/' + newsLang + '/news/page-data.json'
-  );
-  return valorantNews['result']['data']['contentstackNews']['featured_news']['reference'];
+const lang = 'en-us';
+const valorantEndpoint = `https://playvalorant.com/page-data/${lang}`;
+const leaugeEndpoint = `https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/${lang}/production/${lang}/page-data/news`;
+
+export async function GetValorantNews() {
+  const res = await fetchAPI(valorantEndpoint + '/news/page-data.json');
+  return res.result.data.contentstackNews.featured_news.reference;
 }
 
-function GetLeagueData(data: any) {
-  return data['result']['pageContext']['data']['sections'][0]['props']['articles'][0];
+export async function GetLeagueNews() {
+  const parseData = (data: any) => data.result.pageContext.data.sections[0].props.articles[0];
+
+  const updates = await fetchAPI(leaugeEndpoint + '/game-updates/page-data.json');
+  const patchNotes = await fetchAPI(leaugeEndpoint + '/tags/patch-notes/page-data.json');
+  const media = await fetchAPI(leaugeEndpoint + '/media/page-data.json');
+  return [parseData(updates), parseData(patchNotes), parseData(media)];
 }
 
-async function GetLeagueNews() {
-  let resGameUpdates: any = await GetAPI(
-    'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/' +
-      newsLang +
-      '/production/' +
-      newsLang +
-      '/page-data/news/game-updates/page-data.json'
-  );
-  let resPathNotes: any = await GetAPI(
-    'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/' +
-      newsLang +
-      '/production/' +
-      newsLang +
-      '/page-data/news/tags/patch-notes/page-data.json'
-  );
-  let resMedia: any = await GetAPI(
-    'https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/' +
-      newsLang +
-      '/production/' +
-      newsLang +
-      '/page-data/news/media/page-data.json'
-  );
-  let gameUpdates = GetLeagueData(resGameUpdates);
-  let pathNotes = GetLeagueData(resPathNotes);
-  let media = GetLeagueData(resMedia);
-  return [gameUpdates, pathNotes, media];
-}
-
-function GetAPI(url: string) {
+function fetchAPI(url: string): any {
   return new Promise(function (resolve, reject) {
-    request(url, { json: true }, function (error: any, res: any, body: any) {
-      if (!error && res.statusCode === 200) {
-        resolve(body);
-      } else {
-        reject(error);
-      }
+    request(url, { json: true }, (error, res, body) => {
+      // statusCode could be not 200 while no error, caused by an api error, not connection
+      if (!error && res.statusCode === 200) resolve(body);
+      else reject(error);
     });
   });
 }
-
-export { GetValorantNews, GetLeagueNews };

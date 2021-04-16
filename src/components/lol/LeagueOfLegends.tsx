@@ -2,19 +2,16 @@ import React, { useLayoutEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import league_background from '../../assets/league-background.jpg';
 import lolLogo from '../../assets/league-logo.png';
-import { Card, Container, Jumbotron, Row } from 'react-bootstrap';
+import { Container, Jumbotron, Row } from 'react-bootstrap';
 import './LeagueOfLegends.scss';
 import SimpleBar from 'simplebar-react';
 import borderImage from '../../assets/league-border.png';
 import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import { GetLeagueNews } from '../../api/GetNews';
 import LeagueCard from '../league-card/LeagueCard';
-
-const { shell, ipcRenderer } = window.require('electron');
-const request = require('request');
+const { ipcRenderer } = window.require('electron');
 
 const jumbotron_height = 350;
-const newsLang = 'en-us';
 
 function useWindowSize() {
   const [size, setSize] = useState([0, 0]);
@@ -30,7 +27,7 @@ function useWindowSize() {
   return size;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     jumboBackground: {
       height: jumbotron_height,
@@ -63,9 +60,7 @@ export default function LeagueOfLegends() {
 
   const launchLeague = () => {
     ipcRenderer.send('launch-league', null);
-    ipcRenderer.on('launch-league-error', (event: any, args: any) => {
-      setError(args);
-    });
+    ipcRenderer.on('launch-league-error', (event: any, args: any) => setError(args));
   };
 
   return (
@@ -95,15 +90,11 @@ export default function LeagueOfLegends() {
               className={'unselectable m-0 p-0 align-middle d-flex justify-content-center'}
               src={lolLogo}
               height={jumbotron_height * 0.7}
+              alt="LoL Logo"
             />
           </div>
           <div id={'start-lol-container'}>
-            <a
-              onClick={() => {
-                launchLeague();
-              }}
-              className="white unselectable"
-            >
+            <a onClick={() => launchLeague()} className="white unselectable">
               <p>
                 <span className="bg" />
                 <span className="base" />
@@ -121,15 +112,15 @@ export default function LeagueOfLegends() {
         <Container className={'mb-5'}>
           <Row>
             {leagueNews
-              ? leagueNews!.map((element: any) => {
-                  if (!element) return;
+              ? leagueNews.map((element: any) => {
+                  if (!element) return null;
                   return (
                     <div className={'col-6'}>
                       <LeagueCard news={element} />
                     </div>
                   );
                 })
-              : ''}
+              : null}
           </Row>
         </Container>
       </SimpleBar>
