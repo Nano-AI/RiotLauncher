@@ -6,7 +6,6 @@ $pink: #ff4655;
 $transition: 0.3s ease-out all;
 $height: 54px;
 
-
 @font-face {
   font-family: 'Valorant';
   src: url('../../assets/ValorantFont.ttf') format('truetype');
@@ -101,7 +100,7 @@ $height: 54px;
 
     &:after,
     &:before {
-      content: "";
+      content: '';
       width: 1px;
       position: absolute;
       height: 8px;
@@ -137,7 +136,7 @@ $height: 54px;
         border: 1px solid $pink;
 
         &:before {
-          content: "";
+          content: '';
           width: 2px;
           height: 2px;
           left: -1px;
@@ -168,7 +167,7 @@ $height: 54px;
         top: 0;
 
         &:after {
-          content: "";
+          content: '';
           width: 4px;
           height: 4px;
           right: 0;

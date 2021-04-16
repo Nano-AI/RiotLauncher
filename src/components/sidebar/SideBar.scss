@@ -5,13 +5,13 @@ $settings-color: rgb(225, 225, 225);
 $settings-color-hover: white;
 
 .no-antialising {
-  image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
-  image-rendering: -moz-crisp-edges;          /* Firefox                        */
-  image-rendering: -o-crisp-edges;            /* Opera                          */
+  image-rendering: optimizeSpeed; /* STOP SMOOTHING, GIVE ME SPEED  */
+  image-rendering: -moz-crisp-edges; /* Firefox                        */
+  image-rendering: -o-crisp-edges; /* Opera                          */
   image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
-  image-rendering: pixelated;                 /* Chrome                         */
-  image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
-  -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+  image-rendering: pixelated; /* Chrome                         */
+  image-rendering: optimize-contrast; /* CSS3 Proposed                  */
+  -ms-interpolation-mode: nearest-neighbor; /* IE8+                           */
 }
 
 .no-url {
@@ -51,7 +51,7 @@ $settings-color-hover: white;
   cursor: pointer !important;
   color: $settings-color;
   display: flex;
-  align-items:center;
+  align-items: center;
 }
 
 #settings:hover {

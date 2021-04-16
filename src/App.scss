@@ -22,7 +22,6 @@ $scrollbar-color: rgb(60, 60, 60);
   -webkit-user-select: none;
 }
 
-
 .card-button {
   display: inline-block;
   background: none;
@@ -30,7 +29,7 @@ $scrollbar-color: rgb(60, 60, 60);
   cursor: pointer;
   position: relative;
   color: whitesmoke;
-  transition: color .2s;
+  transition: color 0.2s;
 }
 
 .card-button:after {
@@ -45,27 +44,27 @@ $scrollbar-color: rgb(60, 60, 60);
 
 /* Directions */
 .card-button.left:after {
-  left: -.3em;
+  left: -0.3em;
   top: 0;
   height: 100%;
-  width: .08em;
+  width: 0.08em;
   transform: skew(-20deg);
-  transition: width .2s;
+  transition: width 0.2s;
 }
 
 .card-button.left:hover:after {
-  width: calc(100% + .6em);
+  width: calc(100% + 0.6em);
 }
 
 .card-button.right:after {
-  right: -.3em;
+  right: -0.3em;
   top: 0;
   height: 100%;
-  width: .08em;
+  width: 0.08em;
   transform: skew(-20deg);
-  transition: width .2s;
+  transition: width 0.2s;
 }
 
 .card-button.right:hover:after {
-  width: calc(100% + .6em);
+  width: calc(100% + 0.6em);
 }
