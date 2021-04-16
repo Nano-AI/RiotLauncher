@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import valorant_background from '../../assets/valorant-background.jpg';
-import { Card, Container, Jumbotron, Row } from 'react-bootstrap';
+import { Container, Jumbotron, Row } from 'react-bootstrap';
 import './Valorant.scss';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@material
 import { GetValorantNews } from '../../api/GetNews';
 import ValorantCard from '../valorant-card/ValorantCard';
 
-const { shell, ipcRenderer } = window.require('electron');
+const { ipcRenderer } = window.require('electron');
 
 const jumbotron_height = 350;
 
@@ -89,12 +89,7 @@ export default function Valorant() {
             </h1>
           </div>
           <div id={'start-valorant-container'}>
-            <a
-              onClick={() => {
-                launchValorant();
-              }}
-              className="white unselectable"
-            >
+            <a onClick={() => launchValorant()} className="white unselectable">
               <p>
                 <span className="bg" />
                 <span className="base" />
@@ -112,14 +107,15 @@ export default function Valorant() {
         <Container className={'mb-5'}>
           <Row>
             {vNews
-              ? vNews!.map((element: any) => {
+              ? vNews.map((element: any) => {
+                  if (!element) return null;
                   return (
                     <div className={'col-6'}>
                       <ValorantCard news={element} />
                     </div>
                   );
                 })
-              : ''}
+              : null}
           </Row>
         </Container>
       </SimpleBar>

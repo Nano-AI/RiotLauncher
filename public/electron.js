@@ -2,8 +2,6 @@ const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const child = require('child_process').execFile;
 const storage = require('electron-json-storage');
-const http = require('https'); // or 'https' for https:// URLs
-const fs = require('fs');
 const request = require('request');
 
 const githubReleaseAPI = 'https://api.github.com/repos/Nano-AI/RiotLauncher/releases/latest';
